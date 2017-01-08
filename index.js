@@ -64,7 +64,7 @@ const getImageData = userAgent => (url) => {
   })
 }
 
-app.get('/api/1/comics/rocky/latest.gif', (req, res) => {
+app.get('/api/1/comics/rocky/latest', (req, res) => {
   getLatestStripUrl(userAgent, comics.rocky.url, comics.rocky.scraper)
     .then(getImageData(userAgent))
     .then((imageData) => {
@@ -74,7 +74,7 @@ app.get('/api/1/comics/rocky/latest.gif', (req, res) => {
     .catch(e => console.error(e));
 });
 
-app.get('/api/1/comics/halge/latest.jpg', (req, res) => {
+app.get('/api/1/comics/halge/latest', (req, res) => {
   getLatestStripUrl(userAgent, comics.halge.url, comics.halge.scraper)
     .then(getImageData(userAgent))
     .then((imageData) => {
