@@ -5,3 +5,4 @@ API to retrieve latest strip of a developer's favorite comics
 * /api/v1/comics/dilbert/latest
 * /api/v1/comics/halge/latest
 * /api/v1/comics/rocky/latest
+* /api/v1/comics/userfriendly/latest

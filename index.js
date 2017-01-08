@@ -33,6 +33,14 @@ const comics = {
       return url;
     },
   },
+  userfriendly: {
+    url: 'http://userfriendly.org/',
+    scraper: (body) => {
+      const $ = cheerio.load(body);
+      const url = $('[alt="Latest Strip"]').first().attr('src');
+      return url;
+    },
+  },
 };
 
 const getLatestStripUrl = (userAgent, url, scraper) => {
@@ -95,6 +103,16 @@ app.get('/api/v1/comics/rocky/latest', (req, res) => {
 
 app.get('/api/v1/comics/halge/latest', (req, res) => {
   getLatestStripUrl(userAgent, comics.halge.url, comics.halge.scraper)
+    .then(getImageData(userAgent))
+    .then((imageData) => {
+      res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+      res.end(imageData, 'binary');
+    })
+    .catch(e => console.error(e));
+});
+
+app.get('/api/v1/comics/userfriendly/latest', (req, res) => {
+  getLatestStripUrl(userAgent, comics.userfriendly.url, comics.userfriendly.scraper)
     .then(getImageData(userAgent))
     .then((imageData) => {
       res.writeHead(200, { 'Content-Type': 'image/jpeg' });
