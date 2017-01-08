@@ -15,6 +15,7 @@ const comics = {
       const url = $('.img-comic').first().attr('src');
       return url;
     },
+    contentType: 'jpeg',
   },
   halge: {
     url: 'http://www.halge.se/strippar/',
@@ -23,6 +24,7 @@ const comics = {
       const url = $('.entry-featured-image-url').first().children('img').first().attr('src');
       return url;
     },
+    contentType: 'jpeg',
   },
   rocky: {
     url: 'http://www.dn.se/serier/rocky/',
@@ -32,6 +34,7 @@ const comics = {
       const url = `http://www.dn.se/${relativeUrl}`;
       return url;
     },
+    contentType: 'image/gif',
   },
   userfriendly: {
     url: 'http://userfriendly.org/',
@@ -40,6 +43,7 @@ const comics = {
       const url = $('[alt="Latest Strip"]').first().attr('src');
       return url;
     },
+    contentType: 'jpeg',
   },
 };
 
@@ -81,41 +85,26 @@ const getImageData = userAgent => (url) => {
   })
 }
 
-app.get('/api/v1/comics/dilbert/latest', (req, res) => {
-  getLatestStripUrl(userAgent, comics.dilbert.url, comics.dilbert.scraper)
-    .then(getImageData(userAgent))
-    .then((imageData) => {
-      res.writeHead(200, { 'Content-Type': 'image/jpeg' });
-      res.end(imageData, 'binary');
-    })
-    .catch(e => console.error(e));
-});
+const comicValidator = (req, res, next) => {
+  const slug = req.params.slug;
+  const comic = comics[slug];
 
-app.get('/api/v1/comics/rocky/latest', (req, res) => {
-  getLatestStripUrl(userAgent, comics.rocky.url, comics.rocky.scraper)
-    .then(getImageData(userAgent))
-    .then((imageData) => {
-      res.writeHead(200, { 'Content-Type': 'image/gif' });
-      res.end(imageData, 'binary');
-    })
-    .catch(e => console.error(e));
-});
+  if (!comic) {
+    res.sendStatus(404);
+    return;
+  }
 
-app.get('/api/v1/comics/halge/latest', (req, res) => {
-  getLatestStripUrl(userAgent, comics.halge.url, comics.halge.scraper)
-    .then(getImageData(userAgent))
-    .then((imageData) => {
-      res.writeHead(200, { 'Content-Type': 'image/jpeg' });
-      res.end(imageData, 'binary');
-    })
-    .catch(e => console.error(e));
-});
+  next();
+};
 
-app.get('/api/v1/comics/userfriendly/latest', (req, res) => {
-  getLatestStripUrl(userAgent, comics.userfriendly.url, comics.userfriendly.scraper)
+app.get('/api/v1/comics/:slug/latest', comicValidator, (req, res) => {
+  const slug = req.params.slug;
+  const comic = comics[slug];
+
+  getLatestStripUrl(userAgent, comic.url, comic.scraper)
     .then(getImageData(userAgent))
     .then((imageData) => {
-      res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+      res.writeHead(200, { 'Content-Type': comic.contentType });
       res.end(imageData, 'binary');
     })
     .catch(e => console.error(e));
