@@ -1,0 +1,24 @@
+{
+  "name": "comics-api",
+  "version": "0.0.1",
+  "description": "API to retrieve latest strip of a developer's favorite comics",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gish/comics-api.git"
+  },
+  "author": "Erik Hedberg <erik@hedberg.at>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gish/comics-api/issues"
+  },
+  "homepage": "https://github.com/gish/comics-api#readme",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "express": "^4.14.0",
+    "request": "^2.79.0"
+  }
+}
