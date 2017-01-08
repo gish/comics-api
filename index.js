@@ -110,6 +110,17 @@ app.get('/api/v1/comics/:slug/latest', comicValidator, (req, res) => {
     .catch(e => console.error(e));
 });
 
+app.get('/api/v1/comics/:slug/latest/url', comicValidator, (req, res) => {
+  const slug = req.params.slug;
+  const comic = comics[slug];
+
+  getLatestStripUrl(userAgent, comic.url, comic.scraper)
+    .then((url) => {
+      res.send(url);
+    })
+    .catch(e => console.error(e));
+});
+
 app.listen(PORT, () => {
   console.log(`Running server at ${PORT}`);
 });
