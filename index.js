@@ -8,6 +8,14 @@ const PORT = process.env.PORT || 8080;
 const userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.75 Safari/537.36';
 
 const comics = {
+  dilbert: {
+    url: 'http://dilbert.com/',
+    scraper: (body) => {
+      const $ = cheerio.load(body);
+      const url = $('.img-comic').first().attr('src');
+      return url;
+    },
+  },
   halge: {
     url: 'http://www.halge.se/strippar/',
     scraper: (body) => {
@@ -25,7 +33,8 @@ const comics = {
       return url;
     },
   },
-}
+};
+
 const getLatestStripUrl = (userAgent, url, scraper) => {
   return new Promise((resolve, reject) => {
     const options = {
@@ -63,6 +72,16 @@ const getImageData = userAgent => (url) => {
     })
   })
 }
+
+app.get('/api/v1/comics/dilbert/latest', (req, res) => {
+  getLatestStripUrl(userAgent, comics.dilbert.url, comics.dilbert.scraper)
+    .then(getImageData(userAgent))
+    .then((imageData) => {
+      res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+      res.end(imageData, 'binary');
+    })
+    .catch(e => console.error(e));
+});
 
 app.get('/api/v1/comics/rocky/latest', (req, res) => {
   getLatestStripUrl(userAgent, comics.rocky.url, comics.rocky.scraper)
