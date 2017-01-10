@@ -75,7 +75,7 @@ const getLatestStripUrl = (userAgent, url, scraper) => {
   });
 }
 
-const getImageData = userAgent => (url) => {
+const getImageData = (userAgent, url) => {
   return new Promise((resolve, reject) => {
     const options = {
       url,
@@ -111,7 +111,7 @@ app.get('/api/v1/comics/:slug/latest', comicValidator, (req, res) => {
   const comic = comics[slug];
 
   getLatestStripUrl(userAgent, comic.url, comic.scraper)
-    .then(getImageData(userAgent))
+    .then((url) => getImageData(userAgent, url))
     .then((imageData) => {
       res.writeHead(200, { 'Content-Type': comic.contentType });
       res.end(imageData, 'binary');
