@@ -6,6 +6,7 @@ API to retrieve latest strip of a developer's favorite comics
 * `/api/v1/comics/:comicId/latest/url` - Latest comic URL
 
 # Comics
+* Ballard Street - ballard-street
 * Dilbert - dilbert
 * Hälge - halge
 * Rocky - rocky
