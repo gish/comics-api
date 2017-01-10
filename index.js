@@ -46,7 +46,7 @@ app.get('/api/v1/comics/:slug/latest', comicValidator, (req, res) => {
     .then(comic.scraper)
     .then((url) => requestBody(userAgent, url))
     .then((imageData) => {
-      res.writeHead(200, { 'Content-Type': comic.contentType });
+      res.writeHead(200, { 'Content-Type': `image/${comic.contentType}` });
       res.end(imageData, 'binary');
     })
     .catch(e => console.error(e));
