@@ -15,16 +15,16 @@ const requestBody = (userAgent, url) => {
         'User-Agent': userAgent,
       },
       encoding: null,
-    }
+    };
 
     request(options, (error, response, body) => {
       if (error || response.statusCode !== 200) {
-        reject(error)
+        reject(error);
       }
       resolve(body);
-    })
-  })
-}
+    });
+  });
+};
 
 const comicValidator = (req, res, next) => {
   const slug = req.params.slug;
