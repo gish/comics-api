@@ -8,6 +8,15 @@ const PORT = process.env.PORT || 8080;
 const userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.75 Safari/537.36';
 
 const comics = {
+  'ballard-street': {
+    url: 'http://www.gocomics.com/ballardstreet/',
+    scraper: (body) => {
+      const $ = cheerio.load(body);
+      const url = $('.item-comic-image').children('img').first().attr('src');
+      return url;
+    },
+    contentType: 'jpeg',
+  },
   dilbert: {
     url: 'http://dilbert.com/',
     scraper: (body) => {
