@@ -32,8 +32,7 @@ module.exports = {
     url: 'http://www.dn.se/serier/rocky/',
     scraper: (body) => {
       const $ = cheerio.load(body);
-      const relativeUrl = $('#article-content').find('a[href$="gif"]').attr('href');
-      const url = `http://www.dn.se/${relativeUrl}`;
+      const url = $('.teaser-link').first().attr('href');
       return url;
     },
     contentType: 'image/gif',
